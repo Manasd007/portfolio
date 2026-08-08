@@ -126,8 +126,46 @@ export function SelectedWork() {
 }
 
 function ProjectRow({ project: p }: { project: (typeof projects)[number] }) {
+  const liRef = useRef<HTMLLIElement>(null);
   const fillRef = useRef<HTMLDivElement>(null);
   const indexRef = useRef<HTMLSpanElement>(null);
+
+  useEffect(() => {
+    const mq = window.matchMedia("(hover: none)");
+    let io: IntersectionObserver | null = null;
+    const reset = () => {
+      if (fillRef.current) fillRef.current.style.transform = "translateY(101%)";
+      liRef.current?.removeAttribute("data-active");
+    };
+    const setup = () => {
+      io?.disconnect();
+      io = null;
+      reset();
+      if (!mq.matches) return; 
+      const li = liRef.current;
+      if (!li) return;
+      io = new IntersectionObserver(
+        ([entry]) => {
+          const on = entry.isIntersecting;
+          if (fillRef.current) {
+            fillRef.current.style.transform = on
+              ? "translateY(0)"
+              : "translateY(101%)";
+          }
+          if (on) li.setAttribute("data-active", "true");
+          else li.removeAttribute("data-active");
+        },
+        { rootMargin: "-50% 0px -50% 0px", threshold: 0 }
+      );
+      io.observe(li);
+    };
+    setup();
+    mq.addEventListener("change", setup);
+    return () => {
+      mq.removeEventListener("change", setup);
+      io?.disconnect();
+    };
+  }, []);
 
   useEffect(() => {
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
@@ -161,6 +199,7 @@ function ProjectRow({ project: p }: { project: (typeof projects)[number] }) {
 
   return (
     <li
+      ref={liRef}
       className="group relative overflow-hidden border-b-2 border-[color:var(--fg)] last:border-b-0"
       style={{ "--slam-fg": readableOn(p.accent) } as CSSProperties}
     >

@@ -54,7 +54,7 @@ export function CaseStudy({ project: p }: { project: Project }) {
         className="border-b-2 border-[color:var(--fg)]"
         style={{ background: p.accent, color: heroInk }}
       >
-        <div className="shell grid grid-cols-12 items-center gap-x-10 gap-y-12 py-[9vh]">
+        <div className="shell grid grid-cols-12 items-center gap-y-12 py-[9vh] lg:gap-x-10">
           <div className={p.shot ? "col-span-12 lg:col-span-6" : "col-span-12"}>
             <span
               className="inline-block border-2 px-2.5 py-1 font-mono text-[0.7rem] uppercase tracking-[0.18em]"
@@ -120,7 +120,7 @@ export function CaseStudy({ project: p }: { project: Project }) {
         </section>
       )}
 
-      <section className="shell grid grid-cols-12 gap-x-8 gap-y-8 py-[9vh]">
+      <section className="shell grid grid-cols-12 gap-y-8 py-[9vh] md:gap-x-8">
         <p className="mono-label col-span-12 md:col-span-3">Overview</p>
         <div className="col-span-12 md:col-span-9">
           <p className="max-w-[40ch] font-display text-[clamp(1.6rem,4vw,3rem)] uppercase leading-[1.02] tracking-[-0.02em]">

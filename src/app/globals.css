@@ -46,6 +46,7 @@
 html {
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
+  overflow-x: clip; /* safety net: never let stray overflow widen the layout viewport */
 }
 
 /* Lenis is JS-driven; it sets this. Keep native smooth off. */
@@ -173,6 +174,24 @@ a {
   .marquee-track {
     animation: none;
   }
+}
+
+/* ---------- Selected Work: touch centre-highlight ---------- */
+/* Phones have no cursor, so a row's hover fill never fires. A JS observer
+   (gated to hover:none devices) toggles [data-active] on whichever row sits at
+   the screen's vertical centre; the accent fill itself is animated inline. Flip
+   that row's whole ink to the readable colour so its name, tags and copy stay
+   legible on top of the fill. Keyed on [data-active] alone — which is only ever
+   set on touch — so pointer devices are untouched and keep the real :hover. */
+#work li a,
+#work li a * {
+  transition: color 0.3s var(--ease-in-out-quart),
+    border-color 0.3s var(--ease-in-out-quart);
+}
+#work li[data-active] a,
+#work li[data-active] a * {
+  color: var(--slam-fg);
+  border-color: var(--slam-fg);
 }
 
 /* ---------- Film grain overlay ---------- */

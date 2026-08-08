@@ -1,14 +1,9 @@
 "use client";
 
 import { useRef, useMemo, useEffect } from "react";
-import { Canvas, useThree } from "@react-three/fiber";
+import { Canvas, useFrame, useThree } from "@react-three/fiber";
 import * as THREE from "three";
 
-/**
- * Hero background shader: a slow, flowing curl-noise field evoking routed data
- * streams (Conduit's DNA). Dark ink base, accent-orange threads that drift and
- * respond subtly to the pointer. Purely decorative.
- */
 
 const vertex = /* glsl */ `
   varying vec2 vUv;
@@ -135,7 +130,21 @@ function Plane() {
   // Pointer "activity": rises when the cursor moves, decays to 0 when idle.
   const active = useRef(0);
   const targetActive = useRef(0);
-  const { gl, scene, camera } = useThree();
+  const gl = useThree((s) => s.gl);
+  const setSize = useThree((s) => s.setSize);
+
+  useEffect(() => {
+    const parent = gl.domElement.parentElement;
+    if (!parent) return;
+    const fit = () => {
+      const w = parent.clientWidth;
+      const h = parent.clientHeight;
+      if (w > 0 && h > 0) setSize(w, h);
+    };
+    fit();
+    const raf = requestAnimationFrame(fit);
+    return () => cancelAnimationFrame(raf);
+  }, [gl, setSize]);
 
   const uniforms = useMemo(
     () => ({
@@ -150,41 +159,19 @@ function Plane() {
     []
   );
 
-  // Own the animation loop end-to-end: drive uTime from the wall clock and
-  // render the scene directly with the raw WebGL renderer every frame. This is
-  // independent of R3F's internal loop (frameloop="never"), which wasn't ticking
-  // on its own here, so the field keeps flowing without any pointer input.
-  //
-  // Write to the *material's own* uniforms via the ref: R3F doesn't keep our
-  // memoized `uniforms` object by reference, so mutating that object never
-  // reached the shader (uTime stayed frozen). mat.current.uniforms is what
-  // three.js actually uploads.
-  useEffect(() => {
-    let raf = 0;
-    let last = performance.now();
-    const start = last;
-    const loop = (now: number) => {
-      const delta = Math.min((now - last) / 1000, 0.1);
-      last = now;
-      const u = mat.current?.uniforms;
-      if (u) {
-        u.uTime.value = (now - start) / 1000;
-        // domElement.width/height are the real drawing-buffer pixels (dpr-scaled).
-        u.uRes.value.set(gl.domElement.width, gl.domElement.height);
-        // Ease the pointer toward its target (snappy, but still smoothed).
-        mouse.current.lerp(target.current, 0.12);
-        u.uMouse.value.copy(mouse.current);
-        // Frame-rate-independent decay of the movement pulse, then ease toward it.
-        targetActive.current *= Math.exp(-delta * 2.6);
-        active.current += (targetActive.current - active.current) * 0.12;
-        u.uActive.value = active.current;
-      }
-      gl.render(scene, camera);
-      raf = requestAnimationFrame(loop);
-    };
-    raf = requestAnimationFrame(loop);
-    return () => cancelAnimationFrame(raf);
-  }, [gl, scene, camera]);
+  
+  useFrame((_, delta) => {
+    const u = mat.current?.uniforms;
+    if (!u) return;
+    const d = Math.min(delta, 0.1);
+    u.uTime.value += d;
+    u.uRes.value.set(gl.domElement.width, gl.domElement.height);
+    mouse.current.lerp(target.current, 0.12);
+    u.uMouse.value.copy(mouse.current);
+    targetActive.current *= Math.exp(-d * 2.6);
+    active.current += (targetActive.current - active.current) * 0.12;
+    u.uActive.value = active.current;
+  });
 
   // Track the pointer with a passive window listener instead of R3F's
   // onPointerMove, which would raycast the mesh on every mouse move.
@@ -220,7 +207,6 @@ export default function HeroCanvas() {
       dpr={[1, 1.5]}
       gl={{ antialias: false, powerPreference: "high-performance" }}
       style={{ position: "absolute", inset: 0 }}
-      frameloop="never"
     >
       <Plane />
     </Canvas>

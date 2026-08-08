@@ -31,7 +31,7 @@ export function AboutSkills() {
 
   return (
     <section id="about" className="shell py-[14vh]" aria-label="About and skills">
-      <div className="grid grid-cols-12 gap-y-12 gap-x-8">
+      <div className="grid grid-cols-12 gap-y-12 md:gap-x-8">
         <div className="col-span-12 md:col-span-5">
           <SectionLabel index="04" className="mb-8">About</SectionLabel>
           <div className="font-display text-[clamp(1.4rem,3vw,2.2rem)] font-semibold leading-[1.15] tracking-[-0.02em]">

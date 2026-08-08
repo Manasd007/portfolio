@@ -48,7 +48,7 @@ export function Intro() {
   return (
     <section className="shell py-[18vh]" aria-label="About the work">
       <SectionLabel index="01" className="mb-10">Approach</SectionLabel>
-      <div className="grid grid-cols-12 items-center gap-x-10 gap-y-14">
+      <div className="grid grid-cols-12 items-center gap-y-14 md:gap-x-10">
       <p
         ref={ref}
         className="col-span-12 max-w-[22ch] font-display text-[clamp(1.6rem,4.2vw,3.4rem)] font-semibold leading-[1.08] tracking-[-0.02em] md:col-span-7"

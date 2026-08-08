@@ -31,20 +31,12 @@ export function Hero() {
   const [webgl, setWebgl] = useState(false);
 
   useEffect(() => {
-    // Run the WebGL hero on any fine-pointer device (desktop at any window
-    // width) and fall back to the static poster only for touch devices or
-    // reduced-motion. Re-evaluate live so resizing or plugging in a mouse
-    // flips it without a reload. Shrinking the window no longer kills it.
-    const coarse = window.matchMedia("(pointer: coarse)");
+
     const reduce = window.matchMedia("(prefers-reduced-motion: reduce)");
-    const evaluate = () => setWebgl(!coarse.matches && !reduce.matches);
+    const evaluate = () => setWebgl(!reduce.matches);
     evaluate();
-    coarse.addEventListener("change", evaluate);
     reduce.addEventListener("change", evaluate);
-    return () => {
-      coarse.removeEventListener("change", evaluate);
-      reduce.removeEventListener("change", evaluate);
-    };
+    return () => reduce.removeEventListener("change", evaluate);
   }, []);
 
   return (
