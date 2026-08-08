@@ -1,36 +1,39 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Portfolio
 
-## Getting Started
+My personal portfolio site. It's a single page with a WebGL hero, smooth scrolling, a custom cursor, and a few animated case studies of work I've done.
 
-First, run the development server:
+Live at https://portfolio-manasdubey.vercel.app
+
+## Built with
+
+- Next.js 16 (App Router) and React 19, in TypeScript
+- Tailwind CSS 4 for styling
+- Three.js with React Three Fiber, Drei and postprocessing for the hero scene
+- GSAP and Framer Motion for animation
+- Lenis for smooth scroll
+- Fonts (Bricolage Grotesque, Instrument Sans, Space Mono) loaded through `next/font`
+
+## Running it locally
 
 ```bash
+npm install
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Then open http://localhost:3000.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+Other scripts: `npm run build` and `npm run start` for a production build, `npm run lint` to run ESLint.
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## Layout
 
-## Learn More
+Everything lives under `src/`. The home page (`app/page.tsx`) stitches together the sections in `components/sections/` — Hero, Intro, SelectedWork, Experience, AboutSkills and Contact. Case studies are dynamic routes under `app/work/[slug]/`. The 3D hero is in `components/webgl/`, and the smaller pieces (cursor, grain overlay, scroll progress, reveal/magnetic wrappers) sit directly in `components/`. Content like my links, skills, projects and experience is kept separate in `src/data/`.
 
-To learn more about Next.js, take a look at the following resources:
+## Deploying
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+It's set up for Vercel — pushing to the connected repo deploys it. To self-host, `npm run build` then `npm run start`.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## Contact
 
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+- Email — manas.dubey007@gmail.com
+- GitHub — https://github.com/Manasd007
+- LinkedIn — https://www.linkedin.com/in/manasdubey0007/
