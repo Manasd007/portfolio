@@ -76,10 +76,21 @@ export function Hero() {
         </SectionLabel>
         <h1 className="display-xl max-w-[16ch]">
           <Reveal as="span" immediate delay={80}>
-            I build AI systems
+            Curiosity,
           </Reveal>{" "}
           <Reveal as="span" immediate delay={220}>
-            that <span style={{ color: "var(--accent)" }}>ship.</span>
+            <span
+              style={{
+                color: "var(--accent)",
+                fontFamily: "var(--font-script)",
+                fontWeight: 700,
+                fontStyle: "normal",
+                letterSpacing: "0.01em",
+                lineHeight: 0.9,
+              }}
+            >
+              Compiled.
+            </span>
           </Reveal>
         </h1>
         <div className="mt-8 flex flex-col gap-6 sm:flex-row sm:items-end sm:justify-between">
@@ -87,10 +98,9 @@ export function Hero() {
             className="max-w-[42ch] text-[color:var(--muted)] fade-up"
             style={{ animationDelay: "0.5s" }}
           >
-            I&rsquo;m a software engineer working across LLM infrastructure,
-            retrieval, and full-stack products. Four things I&rsquo;ve built are
-            below, from a gateway that fronts five model providers to a legal
-            assistant that won&rsquo;t cite a case it can&rsquo;t find.
+            I&rsquo;m a software engineer who likes moving between domains. The
+            four projects below reach into legal, finance, and travel, each one
+            built on the LLM infrastructure and retrieval I work on underneath.
           </p>
           <div className="fade-up shrink-0 self-start" style={{ animationDelay: "0.6s" }}>
             <Magnetic strength={0.4}>

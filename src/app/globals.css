@@ -181,8 +181,8 @@ a {
    (gated to hover:none devices) toggles [data-active] on whichever row sits at
    the screen's vertical centre; the accent fill itself is animated inline. Flip
    that row's whole ink to the readable colour so its name, tags and copy stay
-   legible on top of the fill. Keyed on [data-active] alone — which is only ever
-   set on touch — so pointer devices are untouched and keep the real :hover. */
+   legible on top of the fill. Keyed on [data-active] alone, which is only ever
+   set on touch, so pointer devices are untouched and keep the real :hover. */
 #work li a,
 #work li a * {
   transition: color 0.3s var(--ease-in-out-quart),

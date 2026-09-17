@@ -12,7 +12,8 @@ export type Project = {
   year: string;
   category: "Infrastructure" | "Applied AI" | "AI Full-Stack" | "Product / SaaS";
   accent: string; // per-project accent for panel theming
-  shot?: string; // path to a page screenshot, e.g. "/shots/conduit.png"; placeholder shown if unset
+  shot?: string; // single screenshot; placeholder shown when unset
+  slides?: string[]; // demo screenshots shown as an auto-playing slideshow (used instead of shot)
   award?: { amount: string; label: string; from: string }; // funding / recognition, crowned
   summary: string;
   problem: string;
@@ -59,20 +60,25 @@ export const projects: Project[] = [
     slug: "legally-ai",
     index: "02",
     name: "Legally AI",
-    tagline: "Precedent-grounded legal assistant for Indian law. Every citation verified.",
+    tagline: "Voice-enabled legal assistant for Indian law, built on Supreme Court case law.",
     role: "Design & build (solo)",
     year: "2026",
     category: "Applied AI",
     accent: "#c9a227",
-    shot: "/shots/legally-ai.png",
+    slides: [
+      "/shots/legally-ai-1.jpg",
+      "/shots/legally-ai-2.jpg",
+      "/shots/legally-ai-3.jpg",
+      "/shots/legally-ai-4.jpg",
+    ],
     award: { amount: "₹12,00,000", label: "Seed funding", from: "E-Cell" },
-    summary: "Legal search grounded in real Supreme Court judgments. Won ₹12,00,000+ in seed funding.",
+    summary: "Legal research over 1,991 Supreme Court judgments. Won ₹12,00,000+ in seed funding.",
     problem:
-      "Legal AI's core failure is invented case law. Legally AI grounds every answer in retrieved judgments and drops whatever it can't verify.",
+      "Legal research means searching thousands of judgments for the ones that are on point. Legally AI does it over 1,991 Supreme Court cases, in text and in voice.",
     hardParts: [
       {
-        title: "Search that can't invent case law",
-        body: "A multi-stage RAG pipeline (query reformulation → vector search → citation verification) over 88,988 passages from 1,991 Supreme Court judgments. Unverifiable citations are stripped.",
+        title: "Multi-stage RAG retrieval",
+        body: "A multi-stage RAG pipeline (query reformulation → vector search → citation verification) over 88,988 passages from 1,991 Supreme Court judgments, with source-linked citations on every answer.",
       },
       {
         title: "Sub-second voice paralegal",
@@ -102,14 +108,19 @@ export const projects: Project[] = [
     year: "2025",
     category: "AI Full-Stack",
     accent: "#3a7d44",
-    shot: "/shots/finsight.png",
-    summary: "A copilot that answers from SEC filings, every claim traceable to the source.",
+    slides: [
+      "/shots/finsight-1.jpg",
+      "/shots/finsight-2.jpg",
+      "/shots/finsight-3.jpg",
+      "/shots/finsight-4.jpg",
+    ],
+    summary: "A copilot that answers questions from SEC 10-K and 10-Q filings.",
     problem:
-      "Financial research means digging dense 10-K and 10-Q filings for one number. FinSight keeps every answer tied to the document it came from.",
+      "Financial research means digging through dense 10-K and 10-Q filings for a single number. FinSight retrieves it and shows the passage it came from.",
     hardParts: [
       {
-        title: "RAG grounded in filings",
-        body: "Retrieval over 10-K and 10-Q filings keeps every answer tied to the document it came from, with no free-floating claims.",
+        title: "RAG over filings",
+        body: "Retrieval over 10-K and 10-Q filings, so each answer points back to the passage it came from.",
       },
       {
         title: "A real retrieval stack",
@@ -120,8 +131,8 @@ export const projects: Project[] = [
         body: "Local LLaMA-2-7B with a Gemini 1.5 Flash fallback. FastAPI and LangChain backend, React, TypeScript, and Vite frontend.",
       },
       {
-        title: "Traceable, and comparable",
-        body: "Every claim links back to the exact passage it came from, and the pipeline runs side-by-side comparisons across companies from the same filings.",
+        title: "Cited, and comparable",
+        body: "Answers link back to the passage they came from, and the pipeline runs side-by-side comparisons across companies from the same filings.",
       },
     ],
     stack: ["FastAPI", "LangChain", "FAISS", "React", "TypeScript", "Vite", "Sentence-Transformers", "LLaMA-2 / Gemini"],
@@ -139,7 +150,12 @@ export const projects: Project[] = [
     year: "2025",
     category: "Product / SaaS",
     accent: "#1b4965",
-    shot: "/shots/waypoint.png",
+    slides: [
+      "/shots/waypoint-1.jpg",
+      "/shots/waypoint-2.jpg",
+      "/shots/waypoint-3.jpg",
+      "/shots/waypoint-4.jpg",
+    ],
     summary: "Turns a prompt into a full itinerary, with planning, payments, and maps in one place.",
     problem:
       "Trip planning is scattered across a dozen tabs. Waypoint pulls generation, collaboration, payments, and maps into one product.",
@@ -149,8 +165,8 @@ export const projects: Project[] = [
         body: "A vibe and a set of dates in; a day-by-day plan out: activities, food, and attractions, with collaboration, expense tracking, and mapped routes around it.",
       },
       {
-        title: "Plans that don't invent places",
-        body: "OpenAI returns schema-locked JSON over three batched passes, under strict accuracy rules: only real, verifiable places and true coordinates, with no fabricated names, hours, or prices.",
+        title: "Structured, mappable output",
+        body: "OpenAI returns schema-locked JSON over three batched passes, so an itinerary comes back as structured data: places with coordinates, ready to drop straight onto a map.",
       },
       {
         title: "An integrated product",

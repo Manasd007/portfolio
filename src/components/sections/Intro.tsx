@@ -10,7 +10,7 @@ import { site } from "@/data/site";
 if (typeof window !== "undefined") gsap.registerPlugin(ScrollTrigger);
 
 const TEXT =
-  "I work across the whole stack: the model, the services around it, and the interface on top. I build all of it to stay honest. My legal assistant won't cite a case it can't find; my gateway checks its cheap answers against a stronger model before trusting them. The real work is making a system fail safe, then fast.";
+  "I work across the whole stack: the model, the services around it, and the interface on top. The parts I care about are the ones nobody sees: routing, caching, retrieval, failover. That plumbing decides whether a system holds up under real traffic. The real work is making it fail safe, then fast.";
 
 /** Word-by-word scrubbed brightening as the reader scrolls through. */
 export function Intro() {

@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Bricolage_Grotesque, Instrument_Sans, Space_Mono } from "next/font/google";
+import { Bricolage_Grotesque, Instrument_Sans, Space_Mono, Dancing_Script } from "next/font/google";
 import "./globals.css";
 import { SmoothScroll } from "@/components/SmoothScroll";
 import { Grain } from "@/components/Grain";
@@ -26,16 +26,23 @@ const mono = Space_Mono({
   display: "swap",
 });
 
+const script = Dancing_Script({
+  variable: "--font-script",
+  subsets: ["latin"],
+  weight: ["600", "700"],
+  display: "swap",
+});
+
 const SITE = "https://manasdubey.dev";
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE),
   title: "Manas Dubey · SDE & AI Engineer",
   description:
-    "SDE who builds AI systems that ship. Selected work: Conduit (LLM gateway), Legally AI, FinSight, Waypoint.",
+    "SDE & AI Engineer. Selected work: Conduit (LLM gateway), Legally AI, FinSight, Waypoint.",
   openGraph: {
     title: "Manas Dubey · SDE & AI Engineer",
-    description: "SDE who builds AI systems that ship.",
+    description: "SDE & AI Engineer.",
     url: SITE,
     siteName: "Manas Dubey",
     type: "website",
@@ -43,7 +50,7 @@ export const metadata: Metadata = {
   twitter: {
     card: "summary_large_image",
     title: "Manas Dubey · SDE & AI Engineer",
-    description: "SDE who builds AI systems that ship.",
+    description: "SDE & AI Engineer.",
   },
 };
 
@@ -53,7 +60,7 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${display.variable} ${sans.variable} ${mono.variable} h-full`}
+      className={`${display.variable} ${sans.variable} ${mono.variable} ${script.variable} h-full`}
     >
       <body className="min-h-full">
         <ScrollProgress />

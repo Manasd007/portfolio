@@ -44,10 +44,10 @@ export function AboutSkills() {
             I&rsquo;m in my final year of CS (AI &amp; ML) at Manipal University
             Jaipur and interning as a full-stack + AI engineer at NeoFab.AI. On my
             own time I&rsquo;ve built a model gateway that fronts five providers, a
-            citation-verified legal assistant that won ₹12,00,000+ in seed funding, a
+            legal assistant that won ₹12,00,000+ in seed funding, a
             RAG copilot for SEC filings, and a travel-planning app that actually
             shipped. Given two designs, I&rsquo;ll usually take the one that&rsquo;s
-            easier to prove right.
+            simpler to reason about.
           </p>
         </div>
 

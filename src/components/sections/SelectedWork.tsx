@@ -20,17 +20,16 @@ const TICKER = [
   "LLM GATEWAY",
   "SEMANTIC CACHE",
   "VECTOR SEARCH",
-  "80% CHEAPER",
+  "CROSS-PROVIDER FAILOVER",
+  "FAISS",
+  "REDIS",
   "FASTAPI",
   "NEXT.JS",
-  "CITATION-VERIFIED",
-  "CROSS-PROVIDER FAILOVER",
-  "INLEGALBERT",
-  "77MS P95",
-  "GROQ LLAMA 3.3",
   "CONVEX",
   "PROMETHEUS",
-  "SHIPPED",
+  "INLEGALBERT",
+  "GROQ LLAMA 3.3",
+  "MCP",
 ];
 
 export function SelectedWork() {

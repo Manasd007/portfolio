@@ -17,6 +17,7 @@ if (typeof window !== "undefined") gsap.registerPlugin(ScrollTrigger);
 export function CaseStudy({ project: p }: { project: Project }) {
   const next = projects[(projects.findIndex((x) => x.slug === p.slug) + 1) % projects.length];
   const heroInk = readableOn(p.accent);
+  const hasMedia = Boolean(p.shot || (p.slides && p.slides.length > 0));
   const hardRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -55,7 +56,7 @@ export function CaseStudy({ project: p }: { project: Project }) {
         style={{ background: p.accent, color: heroInk }}
       >
         <div className="shell grid grid-cols-12 items-center gap-y-12 py-[9vh] lg:gap-x-10">
-          <div className={p.shot ? "col-span-12 lg:col-span-6" : "col-span-12"}>
+          <div className={hasMedia ? "col-span-12 lg:col-span-6" : "col-span-12"}>
             <span
               className="inline-block border-2 px-2.5 py-1 font-mono text-[0.7rem] uppercase tracking-[0.18em]"
               style={{ borderColor: heroInk }}
@@ -64,7 +65,7 @@ export function CaseStudy({ project: p }: { project: Project }) {
             </span>
             <h1
               className={`mt-6 font-display uppercase leading-[0.8] tracking-[-0.03em] ${
-                p.shot
+                hasMedia
                   ? "text-[clamp(2.75rem,7vw,6.5rem)]"
                   : "text-[clamp(3rem,13vw,10.5rem)]"
               }`}
@@ -77,7 +78,7 @@ export function CaseStudy({ project: p }: { project: Project }) {
               {p.tagline}
             </p>
           </div>
-          {p.shot && (
+          {hasMedia && (
             <div className="col-span-12 lg:col-span-6">
               <ProjectShot project={p} ink={heroInk} />
             </div>
@@ -196,8 +197,8 @@ export function CaseStudy({ project: p }: { project: Project }) {
 }
 
 function ProjectShot({ project: p, ink }: { project: Project; ink: string }) {
-  // Render the placeholder until the screenshot is confirmed to load. Preloading
-  // client-side avoids a broken-image flash when the file isn't added yet.
+  // `slides` render as a slideshow; otherwise a single `shot` is preloaded and
+  // swapped in once confirmed, avoiding a broken-image flash before it exists.
   const [loaded, setLoaded] = useState(false);
   useEffect(() => {
     if (!p.shot) return;
@@ -228,7 +229,9 @@ function ProjectShot({ project: p, ink }: { project: Project; ink: string }) {
         </span>
       </div>
 
-      {p.shot && loaded ? (
+      {p.slides && p.slides.length > 0 ? (
+        <Slideshow slides={p.slides} ink={ink} name={p.name} />
+      ) : p.shot && loaded ? (
         // eslint-disable-next-line @next/next/no-img-element
         <img
           src={p.shot}
@@ -252,6 +255,76 @@ function ProjectShot({ project: p, ink }: { project: Project; ink: string }) {
         </div>
       )}
     </figure>
+  );
+}
+
+function Slideshow({ slides, ink, name }: { slides: string[]; ink: string; name: string }) {
+  const HOLD = 3600; // ms per slide
+  const [active, setActive] = useState(0);
+  const [paused, setPaused] = useState(false);
+  const [reduce, setReduce] = useState(false);
+
+  useEffect(() => {
+    const mq = window.matchMedia("(prefers-reduced-motion: reduce)");
+    const on = () => setReduce(mq.matches);
+    on();
+    mq.addEventListener("change", on);
+    return () => mq.removeEventListener("change", on);
+  }, []);
+
+  useEffect(() => {
+    if (paused || slides.length <= 1) return;
+    const id = setInterval(() => setActive((i) => (i + 1) % slides.length), HOLD);
+    return () => clearInterval(id);
+  }, [paused, slides.length]);
+
+  return (
+    <div
+      className="relative aspect-[16/10] w-full overflow-hidden"
+      style={{ background: "rgba(0,0,0,0.12)" }}
+      onMouseEnter={() => setPaused(true)}
+      onMouseLeave={() => setPaused(false)}
+      role="group"
+      aria-roledescription="carousel"
+      aria-label={`${name} demo screenshots`}
+    >
+      {slides.map((src, i) => (
+        // eslint-disable-next-line @next/next/no-img-element
+        <img
+          key={src}
+          src={src}
+          alt={`${name} — screen ${i + 1} of ${slides.length}`}
+          loading={i === 0 ? "eager" : "lazy"}
+          draggable={false}
+          aria-hidden={i !== active}
+          className="absolute inset-0 h-full w-full object-cover object-top will-change-[opacity,transform]"
+          style={{
+            opacity: i === active ? 1 : 0,
+            transform: reduce ? undefined : i === active ? "scale(1.045)" : "scale(1)",
+            transition: reduce
+              ? "opacity .4s ease"
+              : "opacity .9s ease, transform 4.6s ease-out",
+          }}
+        />
+      ))}
+
+      <div className="absolute inset-x-0 bottom-0 flex gap-1.5 p-3">
+        {slides.map((_, i) => (
+          <button
+            key={i}
+            type="button"
+            aria-label={`Show screen ${i + 1}`}
+            aria-current={i === active}
+            onClick={() => setActive(i)}
+            className="h-1 flex-1 transition-opacity"
+            style={{
+              background: i === active ? ink : "rgba(255,255,255,0.28)",
+              opacity: i === active ? 1 : 0.85,
+            }}
+          />
+        ))}
+      </div>
+    </div>
   );
 }
 
