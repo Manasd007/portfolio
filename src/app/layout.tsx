@@ -5,6 +5,7 @@ import { SmoothScroll } from "@/components/SmoothScroll";
 import { Grain } from "@/components/Grain";
 import { Cursor } from "@/components/Cursor";
 import { ScrollProgress } from "@/components/ScrollProgress";
+import { Analytics } from "@vercel/analytics/next";
 
 const display = Bricolage_Grotesque({
   variable: "--font-display",
@@ -67,6 +68,7 @@ export default function RootLayout({
         <SmoothScroll>{children}</SmoothScroll>
         <Grain />
         <Cursor />
+        <Analytics />
       </body>
     </html>
   );
